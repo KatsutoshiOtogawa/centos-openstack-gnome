@@ -34,6 +34,9 @@ Vagrant.configure("2") do |config|
   # using a specific IP.
   # NICを4つ用意
   # private_netoworkは実行ホストからしか見えず、また実行側と違うネットワークのクラスを使うこと。
+  # 10.0.0.1~10.255.255.254 (network address 10.0.0.0/8 broad cast 10.255.255.255/8)
+  # 172.16.0.1~172.31.255.254 (network address 172.16.0.0/16 broad cast 172.31.255.255/16)
+  # 192.168.1.1~192.168.1.254 (network address 192.168.1.0 broad cast 192.168.1.255)
   config.vm.network "private_network", ip: "10.0.2.11"
   config.vm.network "private_network", ip: "10.0.2.12"
   config.vm.network "private_network", ip: "10.0.2.13"
@@ -72,6 +75,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", inline: <<-SHELL
     yum -y update
     # redhat7,centos7系は下のオプションを入れないとgroupinstallできない。
+    # refference https://access.redhat.com/solutions/1310043
     yum -y groupinstall "GNOME Desktop" --setopt=group_package_types=mandatory,default,optional
     # 起動モードをGUIに設定
     systemctl set-default graphical.target
